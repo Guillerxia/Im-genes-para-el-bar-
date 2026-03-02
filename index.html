@@ -373,36 +373,55 @@ summary::before{content:'📷';margin-right:6px;}
   }
 }
 
-@media (max-width: 600px) {
-    h1 {
-        font-size: 1.8rem;
-        letter-spacing: 1px;
-        padding: 0.4rem;
-        word-wrap: break-word;
-        white-space: normal;
-        line-height: 1.2;
-    }
-
-    .seccion h2 {
-        font-size: 1.5rem;
-        letter-spacing: 0px;
-        word-wrap: break-word;
-        white-space: normal;
-        line-height: 1.2;
-        border-left: 4px solid #c9a87c;  /* ← Reduce el border */
-        padding-left: 0.5rem;             /* ← Reduce el padding */
-        margin-right: 0;                  /* ← Asegura que no se salga a la derecha */
-    }
-
-    .hamburguesa-destacada h2 {
-        font-size: 1.5rem !important;
-        letter-spacing: 0px !important;
-        white-space: normal !important;
-        line-height: 1.2 !important;
-        border-left: 4px solid #a0522d;  /* ← Mismo ajuste */
-        padding-left: 0.5rem !important;
-    }
+/* Evita desbordamiento horizontal del contenedor principal */
+.menu-card {
+  overflow-x: hidden;
 }
+
+/* Permite que los elementos dentro del grid se encojan correctamente */
+.grid-dos-columnas > div,
+.item-lista,
+.nombre-descripcion,
+.alergenos-plato {
+  min-width: 0;
+}
+
+/* Forzar quiebre de palabras largas y textos sin espacios */
+.nombre,
+.descripcion-plato,
+.nombre-descripcion,
+.seccion h2,
+.item-lista span,
+.alergenos-plato img {
+  overflow-wrap: break-word;
+  word-break: break-word;
+}
+
+/* Asegurar que imágenes no rompan el ancho en móvil */
+img {
+  max-width: 100%;
+  height: auto;
+  display: block;
+}
+
+/* Ajuste extra para el footer en móviles (por si contribuye al desbordamiento) */
+.restaurante-footer .line,
+.restaurante-footer .address {
+  white-space: normal;
+  overflow-wrap: break-word;
+}
+
+/* Si usas grid en .item-lista, forzar que sus celdas puedan reducirse */
+.item-lista {
+  min-width: 0;
+}
+
+/* Opcional: evita que detalles/summary empujen el layout */
+.item-lista details {
+  max-width: 100%;
+  box-sizing: border-box;
+}
+
 
 </style>
 </head>
@@ -1076,4 +1095,3 @@ summary::before{content:'📷';margin-right:6px;}
     </body>
     
 </html>
-
