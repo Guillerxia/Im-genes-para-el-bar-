@@ -252,6 +252,77 @@ summary::before{content:'📷';margin-right:6px;}
 
 
 
+    /* Ajustes para que los iconos siempre sean circulares y mantengan tamaño */
+.alergenos-plato img.icono-alergeno-nuevo {
+  width: 30px;
+  height: 30px;
+  padding: 1px;
+  border-radius: 50%;
+  background: #f3e9dd;
+  border: 1px solid #c8b79e;
+  object-fit: contain;
+  display: inline-block;
+}
+
+/* Iconos secundarios ligeramente más pequeños para diferenciarlos */
+.alergenos-secundarios img.icono-alergeno-nuevo {
+  width: 22px;
+  height: 22px;
+  padding: 1px;
+  border-radius: 50%;
+  background: #f3e9dd;
+  border: 1px solid #c8b79e;
+  object-fit: contain;
+  display: inline-block;
+}
+
+/* Mantener layout inline en escritorio: iconos principales y secundarios en la misma fila */
+.alergenos-plato {
+  display: inline-flex;
+  flex-direction: row;
+  gap: 8px;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+/* El bloque "puede contener" ya está dentro de .alergenos-secundarios */
+.alergenos-secundarios {
+  display: inline-flex;
+  gap: 6px;
+  align-items: center;
+  margin-left: 6px;
+  font-size: 0.88rem;
+  color: #6f523b;
+  font-style: italic;
+  white-space: nowrap;
+}
+
+/* Móvil: colocar secundarios debajo de los principales y ajustar tamaños */
+@media (max-width: 600px) {
+  .alergenos-plato {
+    flex-direction: column;       /* apila: principales arriba, secundarios abajo */
+    align-items: flex-start;      /* alineado a la izquierda del contenedor */
+    gap: 6px;
+  }
+
+  /* quitar margen izquierdo que desplaza en móvil */
+  .alergenos-secundarios {
+    margin-left: 0;
+    font-size: 0.86rem;
+    white-space: normal;          /* permitir que "puede contener" pueda ajustar en varias líneas si hace falta */
+  }
+
+  /* tamaño de iconos */
+  .alergenos-plato img.icono-alergeno-nuevo { width: 26px; height: 26px; }
+  .alergenos-secundarios img.icono-alergeno-nuevo { width: 20px; height: 20px; }
+
+  /* si hay muchos iconos, permitir que ocupen varias filas sin romper el layout */
+  .alergenos-plato { flex-wrap: wrap; }
+}
+
+    
+    
+
 
 
 .nombre{font-weight:500;color:#2d1f12;}
