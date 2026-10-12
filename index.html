@@ -249,10 +249,69 @@ summary::before{content:'📷';margin-right:6px;}
   .alergenos-secundarios img { width: 18px; height: 18px; }
 }
 
+/* Asegura que los iconos principales se muestren en línea */
+.alergenos-plato {
+  display: flex !important;
+  flex-direction: row !important;
+  gap: 8px;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+/* Si por error tienes un .alergenos-plato anidado, que ese interior también se base en fila */
+.alergenos-plato > .alergenos-plato {
+  display: flex;
+  flex-direction: row;
+  gap: 6px;
+  align-items: center;
+}
+
+/* Los iconos deben ser inline-block (no dejar que img{display:block} los haga ocupar línea) */
+.alergenos-plato img.icono-alergeno-nuevo {
+  display: inline-block !important;
+  width: 30px;
+  height: 30px;
+  padding: 1px;
+  border-radius: 50%;
+  object-fit: contain;
+  background:#f3e9dd;
+  border:1px solid #c8b79e;
+}
+
+/* Bloque secundarios: por defecto en la misma fila (escritorio), pero en móvil se apila abajo */
+.alergenos-secundarios {
+  display: inline-flex;
+  gap: 6px;
+  align-items: center;
+  margin-left: 6px;
+  white-space: nowrap;
+}
+
+/* MÓVIL: colocar solo los secundarios en su propia línea debajo de los principales */
+@media (max-width: 600px) {
+  /* mantener principales en una fila */
+  .alergenos-plato { flex-direction: row; align-items: center; }
+
+  /* forzar que el bloque secundario ocupe la línea completa y se sitúe debajo */
+  .alergenos-plato > .alergenos-secundarios,
+  .alergenos-plato .alergenos-secundarios { 
+    width: 100%;
+    margin-left: 0;
+    margin-top: 6px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    align-items: center;
+    white-space: normal;
+  }
+
+  /* iconos tamaño móvil */
+  .alergenos-plato img.icono-alergeno-nuevo { width: 26px; height: 26px; }
+  .alergenos-plato .alergenos-secundarios img.icono-alergeno-nuevo { width: 20px; height: 20px; }
+}
 
 
-
-    /* Ajustes para que los iconos siempre sean circulares y mantengan tamaño */
+/* Ajustes para que los iconos siempre sean circulares y mantengan tamaño */
 .alergenos-plato img.icono-alergeno-nuevo {
   width: 30px;
   height: 30px;
@@ -320,8 +379,6 @@ summary::before{content:'📷';margin-right:6px;}
   .alergenos-plato { flex-wrap: wrap; }
 }
 
-    
-    
 
 
 
@@ -960,9 +1017,7 @@ img {
                 <details>
                     <summary>Ver foto</summary>
                     <div class="contenedor-foto">
-                        <img src="https://raw.githubusercontent.com/Guillerxia/Im-genes-para-el-bar-/main/ensaladacasaIMG.jpg
-
-" class="img-plato" alt="Ensalada de la casa">
+                        <img src="https://raw.githubusercontent.com/Guillerxia/Im-genes-para-el-bar-/main/ensaladacasaIMG.jpg" class="img-plato" alt="Ensalada de la casa">
                     </div>
                 </details>
                 <span class="precio">8.50€</span>
