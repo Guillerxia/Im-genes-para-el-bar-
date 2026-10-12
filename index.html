@@ -6,6 +6,7 @@
 <title>Carta · Cafetería-Restaurante Chera</title>
 
 <style>
+/* ----------------- BASE ----------------- */
 *{margin:0;padding:0;box-sizing:border-box;}
 
 body{
@@ -74,9 +75,21 @@ h1{
     margin-bottom:1.2rem;
     text-transform:uppercase;
     background:linear-gradient(to right,#f0e1d0,transparent);
+    /* prevent char-by-char wrap if container becomes narrow */
+    white-space: normal;
+    word-break: normal;
+    overflow-wrap: break-word;
 }
 
-.alergenos-plato{grid-column:1/2;display:flex;gap:4px;}
+.alergenos-plato{ /* base: flex row - will be adjusted for mobile below */
+    display:flex;
+    flex-direction:row;
+    gap:8px;
+    align-items:center;
+    flex-wrap:wrap;
+    grid-column:1/2;
+}
+
 .precio{
     grid-column:2/3;
     justify-self:end;
@@ -117,7 +130,7 @@ summary::before{content:'📷';margin-right:6px;}
     border:2px solid #b59b7e;
 }
 
-/* Iconos alérgenos */
+/* Iconos alérgenos (color badges) */
 .alerg-icon{
     width:20px;height:20px;border-radius:50%;
     font-size:0.7rem;font-weight:bold;color:white;
@@ -156,9 +169,11 @@ summary::before{content:'📷';margin-right:6px;}
     padding-left:0.5rem;
     border-left:3px solid #e9cba7;
     font-style:italic;
+    white-space: normal;
+    word-break: normal;
 }
 
-/* Alergenos finales */
+/* Alergenos finales (bloque inferior) */
 .alergenos{
     margin-top:2.5rem;
     padding:1.5rem;
@@ -190,8 +205,7 @@ summary::before{content:'📷';margin-right:6px;}
     object-fit: contain;     /* mantiene proporción del SVG */
 }
 
-
-/* Forzar tamaño solo para los iconos del bloque final */
+/* Forzar tamaño sólo para los iconos del bloque final */
 .alergenos img,
 .alergenos .icono-alergeno-final {
   width: 50px !important;
@@ -206,12 +220,7 @@ summary::before{content:'📷';margin-right:6px;}
   vertical-align: middle !important;
 }
 
-
-
-
-
-
-/* Bloque simple para alérgenos secundarios  */
+/* ----------------- ALERGENOS SECUNDARIOS (SIMPLE) ----------------- */
 .alergenos-secundarios {
   display: inline-flex;
   gap: 6px;
@@ -230,11 +239,10 @@ summary::before{content:'📷';margin-right:6px;}
   white-space: nowrap;
 }
 
-/* usar las mismas clases de icono que ya tienes para mantener el aspecto.
-   Si prefieres, aplicar un tamaño más pequeño a las imágenes secundarias: */
-.alergenos-secundarios img {
-  width: 30px;
-  height: 30px;
+/* iconos dentro de alergenos-secundarios (usar la misma clase para coherencia) */
+.alergenos-secundarios img.icono-alergeno-nuevo {
+  width: 22px;
+  height: 22px;
   padding: 1px;
   border-radius: 50%;
   background: #f3e9dd;
@@ -243,147 +251,20 @@ summary::before{content:'📷';margin-right:6px;}
   display: inline-block;
 }
 
-/* ajuste móvil */
-@media (max-width: 420px) {
-  .alergenos-secundarios .label-puede { font-size: 0.78rem; }
-  .alergenos-secundarios img { width: 18px; height: 18px; }
-}
-
-/* Asegura que los iconos principales se muestren en línea */
-.alergenos-plato {
-  display: flex !important;
-  flex-direction: row !important;
-  gap: 8px;
-  align-items: center;
-  flex-wrap: wrap;
-}
-
-/* Si por error tienes un .alergenos-plato anidado, que ese interior también se base en fila */
-.alergenos-plato > .alergenos-plato {
-  display: flex;
-  flex-direction: row;
-  gap: 6px;
-  align-items: center;
-}
-
-/* Los iconos deben ser inline-block (no dejar que img{display:block} los haga ocupar línea) */
+/* Asegura que los iconos principales se muestren en línea (override global img{display:block}) */
 .alergenos-plato img.icono-alergeno-nuevo {
-  display: inline-block !important;
+  display: inline-block;
   width: 30px;
   height: 30px;
   padding: 1px;
   border-radius: 50%;
-  object-fit: contain;
   background:#f3e9dd;
   border:1px solid #c8b79e;
-}
-
-/* Bloque secundarios: por defecto en la misma fila (escritorio), pero en móvil se apila abajo */
-.alergenos-secundarios {
-  display: inline-flex;
-  gap: 6px;
-  align-items: center;
-  margin-left: 6px;
-  white-space: nowrap;
-}
-
-/* MÓVIL: colocar solo los secundarios en su propia línea debajo de los principales */
-@media (max-width: 600px) {
-  /* mantener principales en una fila */
-  .alergenos-plato { flex-direction: row; align-items: center; }
-
-  /* forzar que el bloque secundario ocupe la línea completa y se sitúe debajo */
-  .alergenos-plato > .alergenos-secundarios,
-  .alergenos-plato .alergenos-secundarios { 
-    width: 100%;
-    margin-left: 0;
-    margin-top: 6px;
-    display: flex;
-    flex-wrap: wrap;
-    gap: 6px;
-    align-items: center;
-    white-space: normal;
-  }
-
-  /* iconos tamaño móvil */
-  .alergenos-plato img.icono-alergeno-nuevo { width: 26px; height: 26px; }
-  .alergenos-plato .alergenos-secundarios img.icono-alergeno-nuevo { width: 26px; height: 26px; }
-}
-
-
-/* Ajustes para que los iconos siempre sean circulares y mantengan tamaño */
-.alergenos-plato img.icono-alergeno-nuevo {
-  width: 30px;
-  height: 30px;
-  padding: 1px;
-  border-radius: 50%;
-  background: #f3e9dd;
-  border: 1px solid #c8b79e;
   object-fit: contain;
-  display: inline-block;
 }
 
-/* Iconos secundarios ligeramente más pequeños para diferenciarlos */
-.alergenos-secundarios img.icono-alergeno-nuevo {
-  width: 30px;
-  height: 30px;
-  padding: 1px;
-  border-radius: 50%;
-  background: #f3e9dd;
-  border: 1px solid #c8b79e;
-  object-fit: contain;
-  display: inline-block;
-}
-
-/* Mantener layout inline en escritorio: iconos principales y secundarios en la misma fila */
-.alergenos-plato {
-  display: inline-flex;
-  flex-direction: row;
-  gap: 8px;
-  align-items: center;
-  flex-wrap: wrap;
-}
-
-/* El bloque "puede contener" ya está dentro de .alergenos-secundarios */
-.alergenos-secundarios {
-  display: inline-flex;
-  gap: 6px;
-  align-items: center;
-  margin-left: 6px;
-  font-size: 0.88rem;
-  color: #6f523b;
-  font-style: italic;
-  white-space: nowrap;
-}
-
-/* Móvil: colocar secundarios debajo de los principales y ajustar tamaños */
-@media (max-width: 600px) {
-  .alergenos-plato {
-    flex-direction: column;       /* apila: principales arriba, secundarios abajo */
-    align-items: flex-start;      /* alineado a la izquierda del contenedor */
-    gap: 6px;
-  }
-
-  /* quitar margen izquierdo que desplaza en móvil */
-  .alergenos-secundarios {
-    margin-left: 0;
-    font-size: 0.86rem;
-    white-space: normal;          /* permitir que "puede contener" pueda ajustar en varias líneas si hace falta */
-  }
-
-  /* tamaño de iconos */
-  .alergenos-plato img.icono-alergeno-nuevo { width: 26px; height: 26px; }
-  .alergenos-secundarios img.icono-alergeno-nuevo { width: 20px; height: 20px; }
-
-  /* si hay muchos iconos, permitir que ocupen varias filas sin romper el layout */
-  .alergenos-plato { flex-wrap: wrap; }
-}
-
-
-
-
+/* ----------------- GRID / ITEM LIST ----------------- */
 .nombre{font-weight:500;color:#2d1f12;}
-/* Línea de plato */
 .item-lista{
     display:grid;
     grid-template-columns:1fr auto;
@@ -391,25 +272,21 @@ summary::before{content:'📷';margin-right:6px;}
     gap:6px 10px;
     padding:0.6rem 0.5rem;
     border-bottom:1px dotted #d4bc9e;
+    min-width: 0;
 }
+
 /* Si un plato NO tiene alérgenos */
-.item-lista:not(:has(.alergenos-plato span)) {
+.item-lista:not(:has(.alergenos-plato img)) {
     grid-template-rows: auto;
     align-items: center;
 }
 
-.item-lista:not(:has(.alergenos-plato span)) .nombre {
+.item-lista:not(:has(.alergenos-plato img)) .nombre {
     grid-row: 1;
 }
 
-.item-lista:not(:has(.alergenos-plato span)) .precio {
+.item-lista:not(:has(.alergenos-plato img)) .precio {
     grid-row: 1;
-}
-
-.contenedor-foto {
-    display: flex;
-    justify-content: center;
-    width: 100%;
 }
 
 /* Centrar botón foto */
@@ -429,6 +306,7 @@ summary::before{content:'📷';margin-right:6px;}
     grid-row: 1 / 3;
     align-self: center;
 }
+
 .nombre-descripcion {
   display: flex;
   flex-direction: row;
@@ -442,8 +320,9 @@ summary::before{content:'📷';margin-right:6px;}
   color: #6f523b;
   font-style: italic;
   opacity: 0.9;
+  white-space: normal;
+  word-break: normal;
 }
-
 
 /* RESPONSIVE */
 @media (max-width: 900px) {
@@ -452,33 +331,36 @@ summary::before{content:'📷';margin-right:6px;}
     }
 }
 
+/* MOBILE: colocar secundarios debajo de los principales y ajustar tamaños */
 @media (max-width: 600px) {
+  .alergenos-plato { flex-direction: row; align-items: center; } /* keep main icons inline */
+  .alergenos-plato .alergenos-secundarios {
+    width: 100%;
+    margin-left: 0;
+    margin-top: 6px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    align-items: center;
+    white-space: normal;
+  }
+  .alergenos-plato img.icono-alergeno-nuevo { width: 26px; height: 26px; }
+  .alergenos-plato .alergenos-secundarios img.icono-alergeno-nuevo { width: 20px; height: 20px; }
 
-    h1 {
-        font-size: 1.8rem;
-        letter-spacing: 1px;
-        padding: 0.4rem;
-        word-wrap: break-word;
-        white-space: normal;
-        line-height: 1.2;
-    }
-
-    .seccion h2 {
-        font-size: 1.5rem;
-        letter-spacing: 0px;
-        word-wrap: break-word;
-        white-space: normal;
-        line-height: 1.2;
-    }
-
-    .hamburguesa-destacada h2 {
-        font-size: 1.5rem !important;
-        letter-spacing: 0px !important;
-        white-space: normal !important;
-        line-height: 1.2 !important;
-    }
+  h1 { font-size: 1.8rem; letter-spacing: 1px; padding: 0.4rem; word-wrap: break-word; white-space: normal; line-height: 1.2; }
+  .seccion h2 { font-size: 1.5rem; letter-spacing: 0; word-wrap: break-word; white-space: normal; line-height: 1.2; }
+  .hamburguesa-destacada h2 { font-size: 1.5rem !important; letter-spacing: 0 !important; white-space: normal !important; line-height: 1.2 !important; }
 }
 
+/* Evita desbordamiento horizontal del contenedor principal */
+.menu-card {
+  overflow-x: hidden;
+}
+
+/* Asegurar que imágenes no rompan el ancho en móvil */
+img.img-plato { max-width: 100%; height: auto; display: block; }
+
+/* Otros ajustes del footer */
 .restaurante-footer{
   box-sizing: border-box;
   width: 100%;
@@ -494,109 +376,19 @@ summary::before{content:'📷';margin-right:6px;}
   margin-top: 1.8rem;
   border-top: 2px solid #d6c4a8;
   padding: 14px 0 0 0;
-  padding-right: 8px; /* pequeño margen desde el borde derecho */
+  padding-right: 8px;
   line-height: 1.25;
 }
 
-/* Cada línea como bloque separado */
-.restaurante-footer .line {
-  display: block;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
+.restaurante-footer .line { display:block; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+.restaurante-footer .address { font-weight:500; font-size:0.94rem; color:#6b5138; text-align:right; }
+.restaurante-footer .phone { display:inline-flex; align-items:center; gap:8px; background: rgba(196,154,108,0.08); padding:6px 10px; border-radius:18px; border:1px solid rgba(181,155,126,0.25); font-weight:700; color:#5a3f2a; }
 
-/* Dirección con menor peso visual */
-.restaurante-footer .address {
-  font-weight: 500;
-  font-size: 0.94rem;
-  color: #6b5138;
-  text-align: right;
-}
-
-/* Teléfono con estilo destacado */
-.restaurante-footer .phone {
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  background: rgba(196,154,108,0.08);
-  padding: 6px 10px;
-  border-radius: 18px;
-  border: 1px solid rgba(181,155,126,0.25);
-  font-weight: 700;
-  color: #5a3f2a;
-}
-
-/* Evita que el footer quede "a mitad" en pantallas grandes */
-@media (min-width: 901px) { 
-    .restaurante-footer{ align-items: 
-        center; /* centrado horizontal */ 
-        text-align: center; 
-        padding-right: 0; /* elimina el empuje hacia la derecha */ }
-}
-
-/* Responsive: centrar en pantallas pequeñas */
-@media (max-width: 600px) {
-  .restaurante-footer{
-    align-items: center;
-    text-align: center;
-    padding-right: 0;
-  }
-  .restaurante-footer .line,
-  .restaurante-footer .address {
-    white-space: normal;
-  }
-}
-
-/* Evita desbordamiento horizontal del contenedor principal */
-.menu-card {
-  overflow-x: hidden;
-}
-
-/* Permite que los elementos dentro del grid se encojan correctamente */
+/* min-width guard for grid children */
 .grid-dos-columnas > div,
 .item-lista,
 .nombre-descripcion,
-.alergenos-plato {
-  min-width: 0;
-}
-
-/* Forzar quiebre de palabras largas y textos sin espacios */
-.nombre,
-.descripcion-plato,
-.nombre-descripcion,
-.seccion h2,
-.item-lista span,
-.alergenos-plato img {
-  overflow-wrap: break-word;
-  word-break: break-word;
-}
-
-/* Asegurar que imágenes no rompan el ancho en móvil */
-img {
-  max-width: 100%;
-  height: auto;
-  display: block;
-}
-
-/* Ajuste extra para el footer en móviles (por si contribuye al desbordamiento) */
-.restaurante-footer .line,
-.restaurante-footer .address {
-  white-space: normal;
-  overflow-wrap: break-word;
-}
-
-/* Si usas grid en .item-lista, forzar que sus celdas puedan reducirse */
-.item-lista {
-  min-width: 0;
-}
-
-/* Opcional: evita que detalles/summary empujen el layout */
-.item-lista details {
-  max-width: 100%;
-  box-sizing: border-box;
-}
-
+.alergenos-plato { min-width: 0; }
 
 </style>
 </head>
@@ -634,35 +426,26 @@ img {
                     <img src="https://raw.githubusercontent.com/Guillerxia/Im-genes-para-el-bar-/refs/heads/main/IconoAlergenoLacteos-DairyProducts_icon-icons.com_67597.svg" class="icono-alergeno-nuevo" alt="Lácteos">
                     <img src="https://raw.githubusercontent.com/Guillerxia/Im-genes-para-el-bar-/refs/heads/main/IconoAlergenoHuevo-Egg_icon-icons.com_67598.svg" class="icono-alergeno-nuevo" alt="Huevos">
                 </div>
-                <!--<details>
-                    <summary>Ver foto</summary>
-                    <div class="contenedor-foto">
-                        <img src="https://loremflickr.com/300/200/food" class="img-plato" alt="Queso frito">
-                    </div>
-                </details>-->
                 <span class="precio">5.50€</span>
             </div>
     
             <div class="item-lista">
                 <span class="nombre">Finger de queso</span>
-                    <div class="alergenos-plato">
+                <div class="alergenos-plato">
                     <!-- alérgenos principales -->
-                        <div class="alergenos-plato">
-                            <img src="https://raw.githubusercontent.com/Guillerxia/Im-genes-para-el-bar-/refs/heads/main/IconoAlergenoGluten-Gluten_icon-icons.com_67600.svg" class="icono-alergeno-nuevo" alt="Gluten">
-                            <img src="https://raw.githubusercontent.com/Guillerxia/Im-genes-para-el-bar-/refs/heads/main/IconoAlergenoLacteos-DairyProducts_icon-icons.com_67597.svg" class="icono-alergeno-nuevo" alt="Lácteos">
-                            <img src="https://raw.githubusercontent.com/Guillerxia/Im-genes-para-el-bar-/refs/heads/main/IconoAlergenoHuevo-Egg_icon-icons.com_67598.svg" class="icono-alergeno-nuevo" alt="Huevos">
-                        </div>
-                    </div>
-                    <!-- alérgenos secundarios (texto + iconos) -->
-                        <div class="alergenos-secundarios">
-                            <span class="label-puede">puede contener</span>
-                                <img src="https://raw.githubusercontent.com/Guillerxia/Im-genes-para-el-bar-/refs/heads/main/IconoAlergenoMostaza-Mustard_icon-icons.com_67595.svg" class="icono-alergeno-nuevo" alt="mostaza">
-                                <img src="https://raw.githubusercontent.com/Guillerxia/Im-genes-para-el-bar-/refs/heads/main/Soy_icon-icons.com_67593.svg" class="icono-alergeno-nuevo" alt="soja">
-                        </div>
+                    <img src="https://raw.githubusercontent.com/Guillerxia/Im-genes-para-el-bar-/refs/heads/main/IconoAlergenoGluten-Gluten_icon-icons.com_67600.svg" class="icono-alergeno-nuevo" alt="Gluten">
+                    <img src="https://raw.githubusercontent.com/Guillerxia/Im-genes-para-el-bar-/refs/heads/main/IconoAlergenoLacteos-DairyProducts_icon-icons.com_67597.svg" class="icono-alergeno-nuevo" alt="Lácteos">
+                    <img src="https://raw.githubusercontent.com/Guillerxia/Im-genes-para-el-bar-/refs/heads/main/IconoAlergenoHuevo-Egg_icon-icons.com_67598.svg" class="icono-alergeno-nuevo" alt="Huevos">
 
+                    <!-- alérgenos secundarios (texto + iconos) -->
+                    <div class="alergenos-secundarios">
+                        <span class="label-puede">puede contener</span>
+                        <img src="https://raw.githubusercontent.com/Guillerxia/Im-genes-para-el-bar-/refs/heads/main/IconoAlergenoMostaza-Mustard_icon-icons.com_67595.svg" class="icono-alergeno-nuevo" alt="Mostaza">
+                        <img src="https://raw.githubusercontent.com/Guillerxia/Im-genes-para-el-bar-/refs/heads/main/Soy_icon-icons.com_67593.svg" class="icono-alergeno-nuevo" alt="Soja">
+                    </div>
+                </div>
                 <span class="precio">4.50€</span>
             </div>
-
     
             <div class="item-lista">
                 <span class="nombre">Rulo con salsa de arándanos</span>
@@ -687,12 +470,6 @@ img {
             <div class="item-lista">
                 <span class="nombre">Oreja a la plancha</span>
                 <div class="alergenos-plato"></div>
-                <!--<details>
-                    <summary>Ver foto</summary>
-                    <div class="contenedor-foto">
-                        <img src="https://loremflickr.com/300/200/food" class="img-plato" alt="Oreja a la plancha">
-                    </div>
-                </details>-->
                 <span class="precio">6.00€</span>
             </div>
     
@@ -714,20 +491,16 @@ img {
     
             <div class="item-lista">
                 <span class="nombre">Nuggets de pollo</span>
-                
                 <div class="alergenos-plato">
-                    <!-- alérgenos principales -->
-                        <div class="alergenos-plato">
                     <img src="https://raw.githubusercontent.com/Guillerxia/Im-genes-para-el-bar-/refs/heads/main/IconoAlergenoGluten-Gluten_icon-icons.com_67600.svg" class="icono-alergeno-nuevo" alt="Gluten">
-                        </div>                
+                    <!-- secundarios dentro del mismo contenedor -->
+                    <div class="alergenos-secundarios">
+                        <span class="label-puede">puede contener</span>
+                        <img src="https://raw.githubusercontent.com/Guillerxia/Im-genes-para-el-bar-/refs/heads/main/Soy_icon-icons.com_67593.svg" class="icono-alergeno-nuevo" alt="Soja">
+                        <img src="https://raw.githubusercontent.com/Guillerxia/Im-genes-para-el-bar-/refs/heads/main/IconoAlergenoApio-Celery_icon-icons.com_67605.svg" class="icono-alergeno-nuevo" alt="Apio">
+                        <img src="https://raw.githubusercontent.com/Guillerxia/Im-genes-para-el-bar-/refs/heads/main/IconoAlergenoMostaza-Mustard_icon-icons.com_67595.svg" class="icono-alergeno-nuevo" alt="Mostaza">
+                    </div>
                 </div>
-                <!-- alérgenos secundarios (texto + iconos) -->
-                        <div class="alergenos-secundarios">
-                            <span class="label-puede">puede contener</span>
-                                <img src="https://raw.githubusercontent.com/Guillerxia/Im-genes-para-el-bar-/refs/heads/main/Soy_icon-icons.com_67593.svg" class="icono-alergeno-nuevo" alt="soja">
-                                <img src="https://raw.githubusercontent.com/Guillerxia/Im-genes-para-el-bar-/refs/heads/main/IconoAlergenoApio-Celery_icon-icons.com_67605.svg" class="icono-alergeno-nuevo" alt="Apio">
-                                <img src="https://raw.githubusercontent.com/Guillerxia/Im-genes-para-el-bar-/refs/heads/main/IconoAlergenoMostaza-Mustard_icon-icons.com_67595.svg" class="icono-alergeno-nuevo" alt="mostaza">
-                        </div>
                 <span class="precio">4.00€</span>
             </div>
     
@@ -741,60 +514,49 @@ img {
     
             <div class="item-lista">
                 <span class="nombre">Chistorra</span>
-                <div class="alergenos-plato">
-            
-                </div>
+                <div class="alergenos-plato"></div>
                 <span class="precio">5.50€</span>
             </div>
     
             <div class="item-lista">
                 <span class="nombre">Pincho moruno</span>
-                
                 <div class="alergenos-plato">
-                    <!-- alérgenos principales -->
-                        <div class="alergenos-plato">
-                            <img src="https://raw.githubusercontent.com/Guillerxia/Im-genes-para-el-bar-/refs/heads/main/IconoAlergenoGluten-Gluten_icon-icons.com_67600.svg" class="icono-alergeno-nuevo" alt="Gluten">
-                            <img src="https://raw.githubusercontent.com/Guillerxia/Im-genes-para-el-bar-/refs/heads/main/IconoAlergenoHuevo-Egg_icon-icons.com_67598.svg" class="icono-alergeno-nuevo" alt="Huevos">
-                            <img src="https://raw.githubusercontent.com/Guillerxia/Im-genes-para-el-bar-/refs/heads/main/IconoAlergenoMostaza-Mustard_icon-icons.com_67595.svg" class="icono-alergeno-nuevo" alt="Mostaza">
-                        </div>
+                    <img src="https://raw.githubusercontent.com/Guillerxia/Im-genes-para-el-bar-/refs/heads/main/IconoAlergenoGluten-Gluten_icon-icons.com_67600.svg" class="icono-alergeno-nuevo" alt="Gluten">
+                    <img src="https://raw.githubusercontent.com/Guillerxia/Im-genes-para-el-bar-/refs/heads/main/IconoAlergenoHuevo-Egg_icon-icons.com_67598.svg" class="icono-alergeno-nuevo" alt="Huevos">
+                    <img src="https://raw.githubusercontent.com/Guillerxia/Im-genes-para-el-bar-/refs/heads/main/IconoAlergenoMostaza-Mustard_icon-icons.com_67595.svg" class="icono-alergeno-nuevo" alt="Mostaza">
+                    <div class="alergenos-secundarios">
+                        <span class="label-puede">puede contener</span>
+                        <img src="https://raw.githubusercontent.com/Guillerxia/Im-genes-para-el-bar-/refs/heads/main/IconoAlergenoGranosSesamo-SesameGrains_icon-icons.com_67599.svg" class="icono-alergeno-nuevo" alt="Sésamo">
+                    </div>
                 </div>
-                <!-- alérgenos secundarios (texto + iconos) -->
-                        <div class="alergenos-secundarios">
-                            <span class="label-puede">puede contener</span>
-                                <img src="https://raw.githubusercontent.com/Guillerxia/Im-genes-para-el-bar-/refs/heads/main/IconoAlergenoGranosSesamo-SesameGrains_icon-icons.com_67599.svg" class="icono-alergeno-nuevo" alt="Sésamo">
-                        </div>
                 <span class="precio">3.00€</span>
             </div>
+    
             <div class="item-lista">
                 <span class="nombre">Choricitos</span>
                 <div class="alergenos-plato">
-                <img src="https://raw.githubusercontent.com/Guillerxia/Im-genes-para-el-bar-/refs/heads/main/Soy_icon-icons.com_67593.svg" class="icono-alergeno-nuevo" alt="soja">
-                <img src="https://raw.githubusercontent.com/Guillerxia/Im-genes-para-el-bar-/refs/heads/main/IconoAlergenoLacteos-DairyProducts_icon-icons.com_67597.svg" class="icono-alergeno-nuevo" alt="Lácteos">
+                    <img src="https://raw.githubusercontent.com/Guillerxia/Im-genes-para-el-bar-/refs/heads/main/Soy_icon-icons.com_67593.svg" class="icono-alergeno-nuevo" alt="Soja">
+                    <img src="https://raw.githubusercontent.com/Guillerxia/Im-genes-para-el-bar-/refs/heads/main/IconoAlergenoLacteos-DairyProducts_icon-icons.com_67597.svg" class="icono-alergeno-nuevo" alt="Lácteos">
                 </div>
                 <span class="precio">5.50€</span>
             </div>
     
             <div class="item-lista">
                 <span class="nombre">Croquetas</span>
-                
                 <div class="alergenos-plato">
-                    <!-- alérgenos principales -->
-                        <div class="alergenos-plato">
-                            <img src="https://raw.githubusercontent.com/Guillerxia/Im-genes-para-el-bar-/refs/heads/main/IconoAlergenoGluten-Gluten_icon-icons.com_67600.svg" class="icono-alergeno-nuevo" alt="Gluten">
-                            <img src="https://raw.githubusercontent.com/Guillerxia/Im-genes-para-el-bar-/refs/heads/main/IconoAlergenoHuevo-Egg_icon-icons.com_67598.svg" class="icono-alergeno-nuevo" alt="Huevos">     
-                        </div>
-                        <!-- alérgenos secundarios (texto + iconos) -->
-                        <div class="alergenos-secundarios">
-                            <span class="label-puede">puede contener</span>
-                                <img src="https://raw.githubusercontent.com/Guillerxia/Im-genes-para-el-bar-/refs/heads/main/Soy_icon-icons.com_67593.svg" class="icono-alergeno-nuevo" alt="soja">
-                                <img src="https://raw.githubusercontent.com/Guillerxia/Im-genes-para-el-bar-/refs/heads/main/IconoAlergenoCrustaceo-Crustaceans_icon-icons.com_67603.svg" class="icono-alergeno-nuevo" alt="Crustáceos">
-                                <img src="https://raw.githubusercontent.com/Guillerxia/Im-genes-para-el-bar-/refs/heads/main/IconoAlergenoDioxidoAzufreSulfitosSulfurDioxideSulphites_icon-icons.com_67602.svg" class="icono-alergeno-nuevo" alt="Sulfitos">
-                                <img src="https://raw.githubusercontent.com/Guillerxia/Im-genes-para-el-bar-/8ecf3bc1c4d1ad00ed6a281c16a00d1a324da4e4/Fish_icon-icons.com_67594.svg" class="icono-alergeno-nuevo" alt="Pescado">
-                                <img src="https://raw.githubusercontent.com/Guillerxia/Im-genes-para-el-bar-/refs/heads/main/IconoAlergenoApio-Celery_icon-icons.com_67605.svg" class="icono-alergeno-nuevo" alt="Apio">
-                                <img src="https://raw.githubusercontent.com/Guillerxia/Im-genes-para-el-bar-/refs/heads/main/IconoAlergenoGranosSesamo-SesameGrains_icon-icons.com_67599.svg" class="icono-alergeno-nuevo" alt="Sésamo">
-                                <img src="https://raw.githubusercontent.com/Guillerxia/Im-genes-para-el-bar-/refs/heads/main/IconoAlergenoMoluscos-Mollusks_icon-icons.com_67596.svg" class="icono-alergeno-nuevo" alt="Moluscos">
-                                <img src="https://raw.githubusercontent.com/Guillerxia/Im-genes-para-el-bar-/refs/heads/main/IconoAlergenoMostaza-Mustard_icon-icons.com_67595.svg" class="icono-alergeno-nuevo" alt="mostaza">
-                        </div>
+                    <img src="https://raw.githubusercontent.com/Guillerxia/Im-genes-para-el-bar-/refs/heads/main/IconoAlergenoGluten-Gluten_icon-icons.com_67600.svg" class="icono-alergeno-nuevo" alt="Gluten">
+                    <img src="https://raw.githubusercontent.com/Guillerxia/Im-genes-para-el-bar-/refs/heads/main/IconoAlergenoHuevo-Egg_icon-icons.com_67598.svg" class="icono-alergeno-nuevo" alt="Huevos">
+                    <div class="alergenos-secundarios">
+                        <span class="label-puede">puede contener</span>
+                        <img src="https://raw.githubusercontent.com/Guillerxia/Im-genes-para-el-bar-/refs/heads/main/Soy_icon-icons.com_67593.svg" class="icono-alergeno-nuevo" alt="Soja">
+                        <img src="https://raw.githubusercontent.com/Guillerxia/Im-genes-para-el-bar-/refs/heads/main/IconoAlergenoCrustaceo-Crustaceans_icon-icons.com_67603.svg" class="icono-alergeno-nuevo" alt="Crustáceos">
+                        <img src="https://raw.githubusercontent.com/Guillerxia/Im-genes-para-el-bar-/refs/heads/main/IconoAlergenoDioxidoAzufreSulfitosSulfurDioxideSulphites_icon-icons.com_67602.svg" class="icono-alergeno-nuevo" alt="Sulfitos">
+                        <img src="https://raw.githubusercontent.com/Guillerxia/Im-genes-para-el-bar-/8ecf3bc1c4d1ad00ed6a281c16a00d1a324da4e4/Fish_icon-icons.com_67594.svg" class="icono-alergeno-nuevo" alt="Pescado">
+                        <img src="https://raw.githubusercontent.com/Guillerxia/Im-genes-para-el-bar-/refs/heads/main/IconoAlergenoApio-Celery_icon-icons.com_67605.svg" class="icono-alergeno-nuevo" alt="Apio">
+                        <img src="https://raw.githubusercontent.com/Guillerxia/Im-genes-para-el-bar-/refs/heads/main/IconoAlergenoGranosSesamo-SesameGrains_icon-icons.com_67599.svg" class="icono-alergeno-nuevo" alt="Sésamo">
+                        <img src="https://raw.githubusercontent.com/Guillerxia/Im-genes-para-el-bar-/refs/heads/main/IconoAlergenoMoluscos-Mollusks_icon-icons.com_67596.svg" class="icono-alergeno-nuevo" alt="Moluscos">
+                        <img src="https://raw.githubusercontent.com/Guillerxia/Im-genes-para-el-bar-/refs/heads/main/IconoAlergenoMostaza-Mustard_icon-icons.com_67595.svg" class="icono-alergeno-nuevo" alt="Mostaza">
+                    </div>
                 </div>
                 <span class="precio">1.50€</span>
             </div>
@@ -813,7 +575,6 @@ img {
                     <img src="https://raw.githubusercontent.com/Guillerxia/Im-genes-para-el-bar-/refs/heads/main/IconoAlergenoHuevo-Egg_icon-icons.com_67598.svg" class="icono-alergeno-nuevo" alt="Huevos">
                     <img src="https://raw.githubusercontent.com/Guillerxia/Im-genes-para-el-bar-/refs/heads/main/IconoAlergenoDioxidoAzufreSulfitosSulfurDioxideSulphites_icon-icons.com_67602.svg" class="icono-alergeno-nuevo" alt="Sulfitos">
                     <img src="https://raw.githubusercontent.com/Guillerxia/Im-genes-para-el-bar-/refs/heads/main/IconoAlergenoMoluscos-Mollusks_icon-icons.com_67596.svg" class="icono-alergeno-nuevo" alt="Moluscos">
-
                 </div>
                 <details>
                 <summary>Ver foto</summary>
@@ -841,34 +602,29 @@ img {
     
             <div class="item-lista">
                 <span class="nombre">Puntillas</span>
-                
                 <div class="alergenos-plato">
-                    <!-- alérgenos principales -->
-                        <div class="alergenos-plato">
                     <img src="https://raw.githubusercontent.com/Guillerxia/Im-genes-para-el-bar-/refs/heads/main/IconoAlergenoGluten-Gluten_icon-icons.com_67600.svg" class="icono-alergeno-nuevo" alt="Gluten">
                     <img src="https://raw.githubusercontent.com/Guillerxia/Im-genes-para-el-bar-/refs/heads/main/IconoAlergenoMoluscos-Mollusks_icon-icons.com_67596.svg" class="icono-alergeno-nuevo" alt="Moluscos">
-                      </div>
+                    <div class="alergenos-secundarios">
+                        <span class="label-puede">puede contener</span>
+                        <img src="https://raw.githubusercontent.com/Guillerxia/Im-genes-para-el-bar-/refs/heads/main/IconoAlergenoCrustaceo-Crustaceans_icon-icons.com_67603.svg" class="icono-alergeno-nuevo" alt="Crustáceos">
+                        <img src="https://raw.githubusercontent.com/Guillerxia/Im-genes-para-el-bar-/8ecf3bc1c4d1ad00ed6a281c16a00d1a324da4e4/Fish_icon-icons.com_67594.svg" class="icono-alergeno-nuevo" alt="Pescado">
+                    </div>
                 </div>
-                <!-- alérgenos secundarios (texto + iconos) -->
-                        <div class="alergenos-secundarios">
-                            <span class="label-puede">puede contener</span>
-                                <img src="https://raw.githubusercontent.com/Guillerxia/Im-genes-para-el-bar-/refs/heads/main/IconoAlergenoCrustaceo-Crustaceans_icon-icons.com_67603.svg" class="icono-alergeno-nuevo" alt="Crustáceos">  
-                                <img src="https://raw.githubusercontent.com/Guillerxia/Im-genes-para-el-bar-/8ecf3bc1c4d1ad00ed6a281c16a00d1a324da4e4/Fish_icon-icons.com_67594.svg" class="icono-alergeno-nuevo" alt="Pescado">
-                        </div>
                 <span class="precio">6.50€</span>
             </div>
     
             <div class="item-lista">
                 <span class="nombre">Calamares a la romana</span>
                 <div class="alergenos-plato">
-                    <img src="https://raw.githubusercontent.com/Guillerxia/Im-genes-para-el-bar-/refs/heads/main/IconoAlergenoGluten-Gluten_icon-icons.com_67600.svg" class="icono-alergeno-nuevo" alt="Gluten"> 
+                    <img src="https://raw.githubusercontent.com/Guillerxia/Im-genes-para-el-bar-/refs/heads/main/IconoAlergenoGluten-Gluten_icon-icons.com_67600.svg" class="icono-alergeno-nuevo" alt="Gluten">
                     <img src="https://raw.githubusercontent.com/Guillerxia/Im-genes-para-el-bar-/refs/heads/main/IconoAlergenoMoluscos-Mollusks_icon-icons.com_67596.svg" class="icono-alergeno-nuevo" alt="Moluscos">
+                    <div class="alergenos-secundarios">
+                        <span class="label-puede">puede contener</span>
+                        <img src="https://raw.githubusercontent.com/Guillerxia/Im-genes-para-el-bar-/refs/heads/main/IconoAlergenoCrustaceo-Crustaceans_icon-icons.com_67603.svg" class="icono-alergeno-nuevo" alt="Crustáceos">
+                        <img src="https://raw.githubusercontent.com/Guillerxia/Im-genes-para-el-bar-/8ecf3bc1c4d1ad00ed6a281c16a00d1a324da4e4/Fish_icon-icons.com_67594.svg" class="icono-alergeno-nuevo" alt="Pescado">
+                    </div>
                 </div>
-                <div class="alergenos-secundarios">
-                            <span class="label-puede">puede contener</span>
-                                <img src="https://raw.githubusercontent.com/Guillerxia/Im-genes-para-el-bar-/refs/heads/main/IconoAlergenoCrustaceo-Crustaceans_icon-icons.com_67603.svg" class="icono-alergeno-nuevo" alt="Crustáceos">  
-                                <img src="https://raw.githubusercontent.com/Guillerxia/Im-genes-para-el-bar-/8ecf3bc1c4d1ad00ed6a281c16a00d1a324da4e4/Fish_icon-icons.com_67594.svg" class="icono-alergeno-nuevo" alt="Pescado">
-                        </div>
                 <span class="precio">6.50€</span>
             </div>
 
@@ -885,27 +641,23 @@ img {
                 <span class="nombre">Chipirones a la plancha</span>
                 <div class="alergenos-plato">
                     <img src="https://raw.githubusercontent.com/Guillerxia/Im-genes-para-el-bar-/refs/heads/main/IconoAlergenoMoluscos-Mollusks_icon-icons.com_67596.svg" class="icono-alergeno-nuevo" alt="Moluscos">
+                    <div class="alergenos-secundarios">
+                        <span class="label-puede">puede contener</span>
+                        <img src="https://raw.githubusercontent.com/Guillerxia/Im-genes-para-el-bar-/refs/heads/main/IconoAlergenoCrustaceo-Crustaceans_icon-icons.com_67603.svg" class="icono-alergeno-nuevo" alt="Crustáceos">
+                        <img src="https://raw.githubusercontent.com/Guillerxia/Im-genes-para-el-bar-/8ecf3bc1c4d1ad00ed6a281c16a00d1a324da4e4/Fish_icon-icons.com_67594.svg" class="icono-alergeno-nuevo" alt="Pescado">
+                    </div>
                 </div>
-                        <div class="alergenos-secundarios">
-                            <span class="label-puede">puede contener</span>
-                                <img src="https://raw.githubusercontent.com/Guillerxia/Im-genes-para-el-bar-/refs/heads/main/IconoAlergenoCrustaceo-Crustaceans_icon-icons.com_67603.svg" class="icono-alergeno-nuevo" alt="Crustáceos">  
-                                <img src="https://raw.githubusercontent.com/Guillerxia/Im-genes-para-el-bar-/8ecf3bc1c4d1ad00ed6a281c16a00d1a324da4e4/Fish_icon-icons.com_67594.svg" class="icono-alergeno-nuevo" alt="Pescado">
-                        </div>
                 <span class="precio">7.00€</span>
             </div>
-    
+
             <div class="item-lista">
                 <span class="nombre">Sepia</span>
-                <div class="alergenos-secundarios">
-                            <span class="label-puede">puede contener</span>
-                                <img src="https://raw.githubusercontent.com/Guillerxia/Im-genes-para-el-bar-/refs/heads/main/IconoAlergenoCrustaceo-Crustaceans_icon-icons.com_67603.svg" class="icono-alergeno-nuevo" alt="Crustáceos">  
-                        </div>
-                <!--<details>
-                    <summary>Ver foto</summary>
-                    <div class="contenedor-foto">
-                        <img src="https://loremflickr.com/300/200/food" class="img-plato" alt="Sepionet">
+                <div class="alergenos-plato">
+                    <div class="alergenos-secundarios">
+                        <span class="label-puede">puede contener</span>
+                        <img src="https://raw.githubusercontent.com/Guillerxia/Im-genes-para-el-bar-/refs/heads/main/IconoAlergenoCrustaceo-Crustaceans_icon-icons.com_67603.svg" class="icono-alergeno-nuevo" alt="Crustáceos">
                     </div>
-                </details>-->
+                </div>
                 <span class="precio">11.00€</span>
             </div>
     
@@ -927,7 +679,7 @@ img {
                     <img src="https://raw.githubusercontent.com/Guillerxia/Im-genes-para-el-bar-/refs/heads/main/IconoAlergenoGluten-Gluten_icon-icons.com_67600.svg" class="icono-alergeno-nuevo" alt="Gluten">
                     <img src="https://raw.githubusercontent.com/Guillerxia/Im-genes-para-el-bar-/refs/heads/main/IconoAlergenoHuevo-Egg_icon-icons.com_67598.svg" class="icono-alergeno-nuevo" alt="Huevos">
                     <img src="https://raw.githubusercontent.com/Guillerxia/Im-genes-para-el-bar-/refs/heads/main/IconoAlergenoLacteos-DairyProducts_icon-icons.com_67597.svg" class="icono-alergeno-nuevo" alt="Lácteos">
-                    <img src="https://raw.githubusercontent.com/Guillerxia/Im-genes-para-el-bar-/refs/heads/main/Soy_icon-icons.com_67593.svg" class="icono-alergeno-nuevo" alt="soja">
+                    <img src="https://raw.githubusercontent.com/Guillerxia/Im-genes-para-el-bar-/refs/heads/main/Soy_icon-icons.com_67593.svg" class="icono-alergeno-nuevo" alt="Soja">
                 </div>
                 <details>
                     <summary>Ver foto</summary>
@@ -959,14 +711,8 @@ img {
                     <img src="https://raw.githubusercontent.com/Guillerxia/Im-genes-para-el-bar-/refs/heads/main/IconoAlergenoGluten-Gluten_icon-icons.com_67600.svg" class="icono-alergeno-nuevo" alt="Gluten">
                     <img src="https://raw.githubusercontent.com/Guillerxia/Im-genes-para-el-bar-/refs/heads/main/IconoAlergenoLacteos-DairyProducts_icon-icons.com_67597.svg" class="icono-alergeno-nuevo" alt="Lácteos">
                     <img src="https://raw.githubusercontent.com/Guillerxia/Im-genes-para-el-bar-/refs/heads/main/IconoAlergenoHuevo-Egg_icon-icons.com_67598.svg" class="icono-alergeno-nuevo" alt="Huevos">
-                    <img src="https://raw.githubusercontent.com/Guillerxia/Im-genes-para-el-bar-/refs/heads/main/Soy_icon-icons.com_67593.svg" class="icono-alergeno-nuevo" alt="soja">
+                    <img src="https://raw.githubusercontent.com/Guillerxia/Im-genes-para-el-bar-/refs/heads/main/Soy_icon-icons.com_67593.svg" class="icono-alergeno-nuevo" alt="Soja">
                 </div>
-                <!--<details>
-                    <summary>Ver foto</summary>
-                    <div class="contenedor-foto">
-                        <img src="https://loremflickr.com/300/200/food" class="img-plato" alt="Pechuguito">
-                    </div>
-                </details>-->
                 <span class="precio">6.00€</span>
             </div>
     
@@ -991,7 +737,7 @@ img {
                 <div class="alergenos-plato">
                     <img src="https://raw.githubusercontent.com/Guillerxia/Im-genes-para-el-bar-/refs/heads/main/IconoAlergenoGluten-Gluten_icon-icons.com_67600.svg" class="icono-alergeno-nuevo" alt="Gluten">
                     <img src="https://raw.githubusercontent.com/Guillerxia/Im-genes-para-el-bar-/refs/heads/main/IconoAlergenoHuevo-Egg_icon-icons.com_67598.svg" class="icono-alergeno-nuevo" alt="Huevos">
-                    <img src="https://raw.githubusercontent.com/Guillerxia/Im-genes-para-el-bar-/refs/heads/main/Soy_icon-icons.com_67593.svg" class="icono-alergeno-nuevo" alt="soja">
+                    <img src="https://raw.githubusercontent.com/Guillerxia/Im-genes-para-el-bar-/refs/heads/main/Soy_icon-icons.com_67593.svg" class="icono-alergeno-nuevo" alt="Soja">
                 </div>
                 <span class="precio">5.50€</span>
             </div>
@@ -1023,15 +769,10 @@ img {
                     <img src="https://raw.githubusercontent.com/Guillerxia/Im-genes-para-el-bar-/refs/heads/main/IconoAlergenoMoluscos-Mollusks_icon-icons.com_67596.svg" class="icono-alergeno-nuevo" alt="Moluscos">
                     <img src="https://raw.githubusercontent.com/Guillerxia/Im-genes-para-el-bar-/8ecf3bc1c4d1ad00ed6a281c16a00d1a324da4e4/Fish_icon-icons.com_67594.svg" class="icono-alergeno-nuevo" alt="Pescado">
                 </div>
-                <!--<details>
-                    <summary>Ver foto</summary>
-                    <div class="contenedor-foto">
-                        <img src="https://loremflickr.com/300/200/food" class="img-plato" alt="Fritura de pescado">
-                    </div>
-                </details>-->
                 <span class="precio">21.00€</span>
             </div>
         </div> 
+    
         <!-- ENSALADAS -->
         <div class="seccion">
             <h2>Ensalada</h2>
@@ -1057,13 +798,13 @@ img {
                     <img src="https://raw.githubusercontent.com/Guillerxia/Im-genes-para-el-bar-/refs/heads/main/IconoAlergenoLacteos-DairyProducts_icon-icons.com_67597.svg" class="icono-alergeno-nuevo" alt="Lácteos">
                     <img src="https://raw.githubusercontent.com/Guillerxia/Im-genes-para-el-bar-/refs/heads/main/IconoAlergenoFrutosCascaraPeelFruits_icon-icons.com_67601.svg" class="icono-alergeno-nuevo" alt="Frutos de cáscara">
                     <img src="https://raw.githubusercontent.com/Guillerxia/Im-genes-para-el-bar-/refs/heads/main/IconoAlergenoMostaza-Mustard_icon-icons.com_67595.svg" class="icono-alergeno-nuevo" alt="Mostaza">
+                    <details>
+                        <summary>Ver foto</summary>
+                        <div class="contenedor-foto">
+                            <img src="https://raw.githubusercontent.com/Guillerxia/Im-genes-para-el-bar-/main/ensaladacasaIMG.jpg" class="img-plato" alt="Ensalada de la casa">
+                        </div>
+                    </details>
                 </div>
-                <details>
-                    <summary>Ver foto</summary>
-                    <div class="contenedor-foto">
-                        <img src="https://raw.githubusercontent.com/Guillerxia/Im-genes-para-el-bar-/main/ensaladacasaIMG.jpg" class="img-plato" alt="Ensalada de la casa">
-                    </div>
-                </details>
                 <span class="precio">8.50€</span>
             </div>
     
@@ -1097,7 +838,7 @@ img {
                 <details>
                     <summary>Ver foto</summary>
                     <div class="contenedor-foto">
-                        <img src="https://raw.githubusercontent.com/Guillerxia/Im-genes-para-el-bar-/main/solomilloIMG.jpg" class="img-plato" alt="Fritura de pescado">
+                        <img src="https://raw.githubusercontent.com/Guillerxia/Im-genes-para-el-bar-/main/solomilloIMG.jpg" class="img-plato" alt="Solomillo">
                     </div>
                 </details>             
                 <div class="alergenos-plato"></div>
@@ -1122,16 +863,15 @@ img {
                     <span class="descripcion-plato">(Solomillo segreto,entrecot,pincho moruno,embutidos y cama da patata a la pobre)</span>
                 </div>
                 <div class="alergenos-plato">
-                    <img src="https://raw.githubusercontent.com/Guillerxia/Im-genes-para-el-bar-/refs/heads/main/Soy_icon-icons.com_67593.svg" class="icono-alergeno-nuevo" alt="soja">     
+                    <img src="https://raw.githubusercontent.com/Guillerxia/Im-genes-para-el-bar-/refs/heads/main/Soy_icon-icons.com_67593.svg" class="icono-alergeno-nuevo" alt="Soja">     
                     <img src="https://raw.githubusercontent.com/Guillerxia/Im-genes-para-el-bar-/refs/heads/main/IconoAlergenoGluten-Gluten_icon-icons.com_67600.svg" class="icono-alergeno-nuevo" alt="Gluten">
                     <img src="https://raw.githubusercontent.com/Guillerxia/Im-genes-para-el-bar-/refs/heads/main/IconoAlergenoHuevo-Egg_icon-icons.com_67598.svg" class="icono-alergeno-nuevo" alt="Huevos">
                     <img src="https://raw.githubusercontent.com/Guillerxia/Im-genes-para-el-bar-/refs/heads/main/IconoAlergenoMostaza-Mustard_icon-icons.com_67595.svg" class="icono-alergeno-nuevo" alt="Mostaza">   
+                    <div class="alergenos-secundarios">
+                        <span class="label-puede">puede contener</span>
+                        <img src="https://raw.githubusercontent.com/Guillerxia/Im-genes-para-el-bar-/refs/heads/main/IconoAlergenoGranosSesamo-SesameGrains_icon-icons.com_67599.svg" class="icono-alergeno-nuevo" alt="Sésamo">
+                    </div>
                 </div>
-                <!-- alérgenos secundarios (texto + iconos) -->
-                        <div class="alergenos-secundarios">
-                            <span class="label-puede">puede contener</span>
-                                <img src="https://raw.githubusercontent.com/Guillerxia/Im-genes-para-el-bar-/refs/heads/main/IconoAlergenoGranosSesamo-SesameGrains_icon-icons.com_67599.svg" class="icono-alergeno-nuevo" alt="Sésamo">
-                        </div>
                 <details>
                     <summary>Ver foto</summary>
                     <div class="contenedor-foto">
@@ -1149,7 +889,7 @@ img {
             <span class="nombre">Mixto</span>
             <div class="alergenos-plato">
                 <img src="https://raw.githubusercontent.com/Guillerxia/Im-genes-para-el-bar-/refs/heads/main/IconoAlergenoGluten-Gluten_icon-icons.com_67600.svg" class="icono-alergeno-nuevo" alt="Gluten">
-                <img src="https://raw.githubusercontent.com/Guillerxia/Im-genes-para-el-bar-/refs/heads/main/Soy_icon-icons.com_67593.svg" class="icono-alergeno-nuevo" alt="soja">
+                <img src="https://raw.githubusercontent.com/Guillerxia/Im-genes-para-el-bar-/refs/heads/main/Soy_icon-icons.com_67593.svg" class="icono-alergeno-nuevo" alt="Soja">
                 <img src="https://raw.githubusercontent.com/Guillerxia/Im-genes-para-el-bar-/refs/heads/main/IconoAlergenoLacteos-DairyProducts_icon-icons.com_67597.svg" class="icono-alergeno-nuevo" alt="Lácteos">
             </div>
             <span class="precio">3.00€</span>
@@ -1183,173 +923,69 @@ img {
                 <img src="https://raw.githubusercontent.com/Guillerxia/Im-genes-para-el-bar-/refs/heads/main/IconoAlergenoGluten-Gluten_icon-icons.com_67600.svg" class="icono-alergeno-nuevo" alt="Gluten">
                 <img src="https://raw.githubusercontent.com/Guillerxia/Im-genes-para-el-bar-/refs/heads/main/IconoAlergenoLacteos-DairyProducts_icon-icons.com_67597.svg" class="icono-alergeno-nuevo" alt="Lácteos">
                 <img src="https://raw.githubusercontent.com/Guillerxia/Im-genes-para-el-bar-/refs/heads/main/IconoAlergenoHuevo-Egg_icon-icons.com_67598.svg" class="icono-alergeno-nuevo" alt="Huevos">
-                
-            </div>
-            <div class="alergenos-secundarios">
-                            <span class="label-puede">puede contener</span>
-                            <img src="https://raw.githubusercontent.com/Guillerxia/Im-genes-para-el-bar-/refs/heads/main/Soy_icon-icons.com_67593.svg" class="icono-alergeno-nuevo" alt="soja">
-                            <img src="https://raw.githubusercontent.com/Guillerxia/Im-genes-para-el-bar-/refs/heads/main/IconoAlergenoGranosSesamo-SesameGrains_icon-icons.com_67599.svg" class="icono-alergeno-nuevo" alt="Sésamo">
-                        </div>
-            <!--<details>
-                <summary>Ver foto</summary>
-                <div class="contenedor-foto">
-                    <img src="https://loremflickr.com/300/200/food" class="img-plato" alt="Hamburguesa de la casa">
+                <div class="alergenos-secundarios">
+                    <span class="label-puede">puede contener</span>
+                    <img src="https://raw.githubusercontent.com/Guillerxia/Im-genes-para-el-bar-/refs/heads/main/Soy_icon-icons.com_67593.svg" class="icono-alergeno-nuevo" alt="Soja">
+                    <img src="https://raw.githubusercontent.com/Guillerxia/Im-genes-para-el-bar-/refs/heads/main/IconoAlergenoGranosSesamo-SesameGrains_icon-icons.com_67599.svg" class="icono-alergeno-nuevo" alt="Sésamo">
                 </div>
-            </details>-->
+            </div>
             <span class="precio" style="font-size:1.5rem;background:#dfcfbf;">9.50€</span>
         </div>
     </div>
-    
-       <!-- POSTRES 
-       <div class="seccion">
-        <h2>Postres</h2>
-    
-        <div class="item-lista">
-            <span class="nombre">Tarta de queso</span>
-            <div class="alergenos-plato"></div>
-            <details>
-                <summary>Ver foto</summary>
-                <div class="contenedor-foto">
-                    <img src="https://loremflickr.com/300/200/dessert" class="img-plato" alt="Tarta de queso">
-                </div>
-            </details>
-            <span class="precio">—</span>
-        </div>
-    
-        <div class="item-lista">
-            <span class="nombre">Coulant de chocolate</span>
-            <div class="alergenos-plato"></div>
-            <details>
-                <summary>Ver foto</summary>
-                <div class="contenedor-foto">
-                    <img src="https://loremflickr.com/300/200/chocolate" class="img-plato" alt="Coulant de chocolate">
-                </div>
-            </details>
-            <span class="precio">—</span>
-        </div>
-    
-        <div class="item-lista">
-            <span class="nombre">Helado variado</span>
-            <div class="alergenos-plato"></div>
-            <span class="precio">—</span>
-        </div>
-    </div>-->
+
     <!-- BEBIDAS -->
     <div class="seccion">
         <h2>Bebidas</h2>
-    
-        <div class="item-lista">
-            <span class="nombre">Agua 1L</span>
-            <div class="alergenos-plato"></div>
-            <span class="precio">1.80€</span>
-        </div>
-    
-        <div class="item-lista">
-            <span class="nombre">Refrescos</span>
-            <div class="alergenos-plato"></div>
-            <span class="precio">1.90€</span>
-        </div>
-    
-        <div class="item-lista">
-            <span class="nombre">Tercio Cerveza Estrella Galicia </span>
-            <div class="alergenos-plato"></div>
-            <span class="precio">2.20€</span>
-        </div>
-    
-        <div class="item-lista">
-            <span class="nombre">Jarra Cerveza 1L</span>
-            <div class="alergenos-plato"></div>
-            <span class="precio">8.00€</span>
-        </div>
-
-        <div class="item-lista">
-            <span class="nombre">Jarra Sangria</span>
-            <div class="alergenos-plato"></div>
-            <span class="precio">8.50€</span>
-        </div>
+        <div class="item-lista"><span class="nombre">Agua 1L</span><div class="alergenos-plato"></div><span class="precio">1.80€</span></div>
+        <div class="item-lista"><span class="nombre">Refrescos</span><div class="alergenos-plato"></div><span class="precio">1.90€</span></div>
+        <div class="item-lista"><span class="nombre">Tercio Cerveza Estrella Galicia </span><div class="alergenos-plato"></div><span class="precio">2.20€</span></div>
+        <div class="item-lista"><span class="nombre">Jarra Cerveza 1L</span><div class="alergenos-plato"></div><span class="precio">8.00€</span></div>
+        <div class="item-lista"><span class="nombre">Jarra Sangria</span><div class="alergenos-plato"></div><span class="precio">8.50€</span></div>
     </div>
 
     <div class="seccion">
         <h2>Plato Infantil</h2>
-
         <div class="item-lista">
             <span class="nombre">Nuggets con patata fritas</span>
             <div class="alergenos-plato">
-                    <!-- alérgenos principales -->
-                        <div class="alergenos-plato">
-                    <img src="https://raw.githubusercontent.com/Guillerxia/Im-genes-para-el-bar-/refs/heads/main/IconoAlergenoGluten-Gluten_icon-icons.com_67600.svg" class="icono-alergeno-nuevo" alt="Gluten">
-                        </div>                
+                <img src="https://raw.githubusercontent.com/Guillerxia/Im-genes-para-el-bar-/refs/heads/main/IconoAlergenoGluten-Gluten_icon-icons.com_67600.svg" class="icono-alergeno-nuevo" alt="Gluten">
+                <div class="alergenos-secundarios">
+                    <span class="label-puede">puede contener</span>
+                    <img src="https://raw.githubusercontent.com/Guillerxia/Im-genes-para-el-bar-/refs/heads/main/Soy_icon-icons.com_67593.svg" class="icono-alergeno-nuevo" alt="Soja">
+                    <img src="https://raw.githubusercontent.com/Guillerxia/Im-genes-para-el-bar-/refs/heads/main/IconoAlergenoApio-Celery_icon-icons.com_67605.svg" class="icono-alergeno-nuevo" alt="Apio">
+                    <img src="https://raw.githubusercontent.com/Guillerxia/Im-genes-para-el-bar-/refs/heads/main/IconoAlergenoMostaza-Mustard_icon-icons.com_67595.svg" class="icono-alergeno-nuevo" alt="Mostaza">
                 </div>
-                <!-- alérgenos secundarios (texto + iconos) -->
-                        <div class="alergenos-secundarios">
-                            <span class="label-puede">puede contener</span>
-                                <img src="https://raw.githubusercontent.com/Guillerxia/Im-genes-para-el-bar-/refs/heads/main/Soy_icon-icons.com_67593.svg" class="icono-alergeno-nuevo" alt="soja">
-                                <img src="https://raw.githubusercontent.com/Guillerxia/Im-genes-para-el-bar-/refs/heads/main/IconoAlergenoApio-Celery_icon-icons.com_67605.svg" class="icono-alergeno-nuevo" alt="Apio">
-                                <img src="https://raw.githubusercontent.com/Guillerxia/Im-genes-para-el-bar-/refs/heads/main/IconoAlergenoMostaza-Mustard_icon-icons.com_67595.svg" class="icono-alergeno-nuevo" alt="mostaza">
-                        </div>
+            </div>
             <span class="precio">4.50€</span>
         </div>
     </div>
     
 <!-- ALÉRGENOS FINALES -->
 <div class="alergenos">
-
-    <div class="alerg-item">
-        <img src="https://raw.githubusercontent.com/Guillerxia/Im-genes-para-el-bar-/refs/heads/main/IconoAlergenoGluten-Gluten_icon-icons.com_67600.svg" class="icono-alergeno-final" alt="Gluten"><span>Gluten</span>
-    </div>
-    <div class="alerg-item">
-        <img src="https://raw.githubusercontent.com/Guillerxia/Im-genes-para-el-bar-/refs/heads/main/IconoAlergenoCrustaceo-Crustaceans_icon-icons.com_67603.svg" class="icono-alergeno-final" alt="Crustáceos"><span>Crustáceos</span>
-    </div>
-    <div class="alerg-item">
-        <img src="https://raw.githubusercontent.com/Guillerxia/Im-genes-para-el-bar-/refs/heads/main/IconoAlergenoHuevo-Egg_icon-icons.com_67598.svg" class="icono-alergeno-final" alt="Huevos"><span>Huevos</span>
-    </div>
-    <div class="alerg-item">
-        <img src="https://raw.githubusercontent.com/Guillerxia/Im-genes-para-el-bar-/8ecf3bc1c4d1ad00ed6a281c16a00d1a324da4e4/Fish_icon-icons.com_67594.svg" class="icono-alergeno-final" alt="Pescado"><span>Pescado</span>
-    </div>
-    <div class="alerg-item">
-        <img src="https://raw.githubusercontent.com/Guillerxia/Im-genes-para-el-bar-/refs/heads/main/IconoAlergenoCacahuete-Peanuts_icon-icons.com_67604.svg" class="icono-alergeno-final" alt="Cacahuetes"><span>Cacahuetes</span>
-    </div>
-    <div class="alerg-item">
-        <img src="https://raw.githubusercontent.com/Guillerxia/Im-genes-para-el-bar-/refs/heads/main/Soy_icon-icons.com_67593.svg" class="icono-alergeno-final" alt="Soja"><span>Soja</span>
-    </div>
-    <div class="alerg-item">
-        <img src="https://raw.githubusercontent.com/Guillerxia/Im-genes-para-el-bar-/refs/heads/main/IconoAlergenoLacteos-DairyProducts_icon-icons.com_67597.svg" class="icono-alergeno-final" alt="Lácteos"><span>Lácteos</span>
-    </div>
-    <div class="alerg-item">
-        <img src="https://raw.githubusercontent.com/Guillerxia/Im-genes-para-el-bar-/refs/heads/main/IconoAlergenoFrutosCascaraPeelFruits_icon-icons.com_67601.svg" class="icono-alergeno-final" alt="Frutos de cáscara"><span>Frutos de cáscara</span>
-    </div>
-    <div class="alerg-item">
-        <img src="https://raw.githubusercontent.com/Guillerxia/Im-genes-para-el-bar-/refs/heads/main/IconoAlergenoApio-Celery_icon-icons.com_67605.svg" class="icono-alergeno-final" alt="Apio"><span>Apio</span>
-    </div>
-    <div class="alerg-item">
-        <img src="https://raw.githubusercontent.com/Guillerxia/Im-genes-para-el-bar-/refs/heads/main/IconoAlergenoMostaza-Mustard_icon-icons.com_67595.svg" class="icono-alergeno-final" alt="Mostaza"><span>Mostaza</span>
-    </div>
-    <div class="alerg-item">
-        <img src="https://raw.githubusercontent.com/Guillerxia/Im-genes-para-el-bar-/refs/heads/main/IconoAlergenoGranosSesamo-SesameGrains_icon-icons.com_67599.svg" class="icono-alergeno-final" alt="Sésamo"><span>Sésamo</span>
-    </div>
-    <div class="alerg-item">
-        <img src="https://raw.githubusercontent.com/Guillerxia/Im-genes-para-el-bar-/refs/heads/main/IconoAlergenoDioxidoAzufreSulfitosSulfurDioxideSulphites_icon-icons.com_67602.svg" class="icono-alergeno-final" alt="Sulfitos"><span>Sulfitos</span>
-    </div>
-    <div class="alerg-item">
-        <img src="https://raw.githubusercontent.com/Guillerxia/Im-genes-para-el-bar-/refs/heads/main/IconoAlergenoAltramuces-Lupins_icon-icons.com_67606.svg" class="icono-alergeno-final" alt="Altramuces"><span>Altramuces</span>
-    </div>
-    <div class="alerg-item">
-        <img src="https://raw.githubusercontent.com/Guillerxia/Im-genes-para-el-bar-/refs/heads/main/IconoAlergenoMoluscos-Mollusks_icon-icons.com_67596.svg" class="icono-alergeno-final" alt="Moluscos"><span>Moluscos</span>
-    </div>
-
+    <div class="alerg-item"><img src="https://raw.githubusercontent.com/Guillerxia/Im-genes-para-el-bar-/refs/heads/main/IconoAlergenoGluten-Gluten_icon-icons.com_67600.svg" class="icono-alergeno-final" alt="Gluten"><span>Gluten</span></div>
+    <div class="alerg-item"><img src="https://raw.githubusercontent.com/Guillerxia/Im-genes-para-el-bar-/refs/heads/main/IconoAlergenoCrustaceo-Crustaceans_icon-icons.com_67603.svg" class="icono-alergeno-final" alt="Crustáceos"><span>Crustáceos</span></div>
+    <div class="alerg-item"><img src="https://raw.githubusercontent.com/Guillerxia/Im-genes-para-el-bar-/refs/heads/main/IconoAlergenoHuevo-Egg_icon-icons.com_67598.svg" class="icono-alergeno-final" alt="Huevos"><span>Huevos</span></div>
+    <div class="alerg-item"><img src="https://raw.githubusercontent.com/Guillerxia/Im-genes-para-el-bar-/8ecf3bc1c4d1ad00ed6a281c16a00d1a324da4e4/Fish_icon-icons.com_67594.svg" class="icono-alergeno-final" alt="Pescado"><span>Pescado</span></div>
+    <div class="alerg-item"><img src="https://raw.githubusercontent.com/Guillerxia/Im-genes-para-el-bar-/refs/heads/main/IconoAlergenoCacahuete-Peanuts_icon-icons.com_67604.svg" class="icono-alergeno-final" alt="Cacahuetes"><span>Cacahuetes</span></div>
+    <div class="alerg-item"><img src="https://raw.githubusercontent.com/Guillerxia/Im-genes-para-el-bar-/refs/heads/main/Soy_icon-icons.com_67593.svg" class="icono-alergeno-final" alt="Soja"><span>Soja</span></div>
+    <div class="alerg-item"><img src="https://raw.githubusercontent.com/Guillerxia/Im-genes-para-el-bar-/refs/heads/main/IconoAlergenoLacteos-DairyProducts_icon-icons.com_67597.svg" class="icono-alergeno-final" alt="Lácteos"><span>Lácteos</span></div>
+    <div class="alerg-item"><img src="https://raw.githubusercontent.com/Guillerxia/Im-genes-para-el-bar-/refs/heads/main/IconoAlergenoFrutosCascaraPeelFruits_icon-icons.com_67601.svg" class="icono-alergeno-final" alt="Frutos de cáscara"><span>Frutos de cáscara</span></div>
+    <div class="alerg-item"><img src="https://raw.githubusercontent.com/Guillerxia/Im-genes-para-el-bar-/refs/heads/main/IconoAlergenoApio-Celery_icon-icons.com_67605.svg" class="icono-alergeno-final" alt="Apio"><span>Apio</span></div>
+    <div class="alerg-item"><img src="https://raw.githubusercontent.com/Guillerxia/Im-genes-para-el-bar-/refs/heads/main/IconoAlergenoMostaza-Mustard_icon-icons.com_67595.svg" class="icono-alergeno-final" alt="Mostaza"><span>Mostaza</span></div>
+    <div class="alerg-item"><img src="https://raw.githubusercontent.com/Guillerxia/Im-genes-para-el-bar-/refs/heads/main/IconoAlergenoGranosSesamo-SesameGrains_icon-icons.com_67599.svg" class="icono-alergeno-final" alt="Sésamo"><span>Sésamo</span></div>
+    <div class="alerg-item"><img src="https://raw.githubusercontent.com/Guillerxia/Im-genes-para-el-bar-/refs/heads/main/IconoAlergenoDioxidoAzufreSulfitosSulfurDioxideSulphites_icon-icons.com_67602.svg" class="icono-alergeno-final" alt="Sulfitos"><span>Sulfitos</span></div>
+    <div class="alerg-item"><img src="https://raw.githubusercontent.com/Guillerxia/Im-genes-para-el-bar-/refs/heads/main/IconoAlergenoAltramuces-Lupins_icon-icons.com_67606.svg" class="icono-alergeno-final" alt="Altramuces"><span>Altramuces</span></div>
+    <div class="alerg-item"><img src="https://raw.githubusercontent.com/Guillerxia/Im-genes-para-el-bar-/refs/heads/main/IconoAlergenoMoluscos-Mollusks_icon-icons.com_67596.svg" class="icono-alergeno-final" alt="Moluscos"><span>Moluscos</span></div>
 </div>
 
-    
-    <!-- FOOTER -->
-    <div class="restaurante-footer">
+<!-- FOOTER -->
+<div class="restaurante-footer">
   <span class="line">Cafetería - Restaurante Chera</span>
   <span class="line address">Carrer de Xera, 3, Patraix, 46017 València, Valencia</span>
   <span class="line phone">📞 600 41 38 81</span>
 </div>
 
-    
     </div> <!-- cierre menu-card -->
     </body>
     
 </html>
-
